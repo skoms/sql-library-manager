@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  h2= error.status
+  p= error.message 
+  br
+  p
+    a.button(href="/") Home
