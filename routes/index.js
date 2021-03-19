@@ -4,7 +4,7 @@ const { Book } = require('../models');
 
 /* Async handler Middleware. */
 function asyncHandler(callback){
-  return async(req, res, next) => {
+  return async (req, res, next) => {
     try {
       await callback(req, res, next)
     } catch(error){
@@ -19,10 +19,10 @@ router.get('/', asyncHandler((req, res, next) => {
 }));
 
 /* GET books page. */
-router.get('/books', asyncHandler((req, res, next) => {
-  // res.render('index', { title: 'Express' });
-  const books = Book.findAll();
-  res.render('all_books', {});
+router.get('/books', asyncHandler( async (req, res, next) => {
+  const books = await Book.findAll();
+  console.log(books);
+  res.render('all_books', { books });
  }));
  
 
