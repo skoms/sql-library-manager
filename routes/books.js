@@ -37,8 +37,12 @@ router.post('/', asyncHandler( async (req, res, next) => {
 
 /* GET book update form page. */
 router.get('/:id', asyncHandler( async (req, res, next) => {
-  const book = await Book.findByPk(req.params.id);
-  res.render('update-book', { title: "Update Book", book });
+  let book = await Book.findByPk(req.params.id);
+  if(book) {
+    res.render('update-book', { title: "Update Book", book });
+  } else {
+    next(); // will pass on the route to the 404 catcher
+  }
 }));
 
 /* POST Update book. */
@@ -47,17 +51,18 @@ router.post('/:id', asyncHandler( async (req, res, next) => {
   try {
     book = await Book.findByPk(req.params.id);
     if (book) {
+      book.id = req.params.id;
       await book.update(req.body);
       res.redirect("/books");
     } else {
       res.sendStatus(404);
     }
   } catch (error) {
+    console.log(error.name);
     if(error.name === "SequelizeValidationError") {
       book = await Book.build(req.body);
       book.id = req.params.id;
-      console.log(error.errors);
-      res.render('update-book', { title: "Edit Book", book, errors: error.errors });
+      res.render('update-book', { title: "Update Book", book, errors: error.errors });
     } else {
       throw error; // error get thrown up to the asyncHandler's catch block
     }
