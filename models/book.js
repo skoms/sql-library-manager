@@ -1,39 +1,57 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Book extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
+const Sequelize = require('sequelize');
+const { Model } = Sequelize;
+const date = new Date();
+const currentYear = date.getFullYear();
+
+module.exports = (sequelize) => {
+  class Book extends Model { };
   Book.init({
     title: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
+      allowEmpty: false,
       validate: {
         notNull: {
-          msg: 'The value of "title" must be specified'
+          msg: 'Please enter the title of the Book'
+        },
+        notEmpty: {
+          msg: 'Please enter the title of the Book'
         }
       }
     },
     author: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false,
+      allowEmpty: false,
       validate: {
         notNull: {
-          msg: 'The value of "author" must be specified'
+          msg: 'Please enter the author of the Book'
+        },
+        notEmpty: {
+          msg: 'Please enter the author of the Book'
         }
       }
     },
-    genre: DataTypes.STRING,
-    year: DataTypes.INTEGER
+    genre: {
+      type: Sequelize.STRING,
+    },
+    year: {
+      type: Sequelize.INTEGER,
+      validate: {
+        isInt: {
+          msg: 'Please enter a valid year only using numbers'
+        },
+        max: {
+          args: currentYear,
+          msg: 'Please provide a valid year'
+        },
+        min: {
+          args: -2100,
+          msg: 'The first book ever written was "Epic of Gilgamesh", in 2100 BCE, I doubt you have something older'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Book',
