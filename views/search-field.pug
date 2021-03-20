@@ -1,0 +1,14 @@
+section.search-forms
+  label(for="title-search") Advanced Search 
+  form.search-adv
+    input#title-search.search-adv(type="text", name="title-search" placeholder="title")
+    input#author-search.search-adv(type="text", name="author-search" placeholder="author")
+    input#genre-search.search-adv(type="text", name="genre-search" placeholder="genre")
+    input#year-search.search-adv(type="text", name="year-search" placeholder="year")
+    br
+    input.search(type="submit", value="Search")
+  label(for="search") Simple Search 
+  form.search
+    input#search.search(type="text", name="search" placeholder="Search...")
+    br
+    input.search(type="submit", value="Search")

@@ -16,7 +16,18 @@ function asyncHandler(callback){
 /* GET books page. */
 router.get('/', asyncHandler( async (req, res, next) => {
   const books = await Book.findAll();
-  res.render('index', { title: "Books", books });
+  res.render('index', { title: "Books", books, checked: false });
+}));
+
+// POST search results page
+router.post('/', asyncHandler( async (req, res, next) => {
+  let books;
+  try {
+    books = await Book.findAll({ where: {}});
+    res.render('index', { title: "Books", books, checked: false });
+  } catch (error) {
+    throw error;
+  }
 }));
  
 /* GET create new book form page. */
