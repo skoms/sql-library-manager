@@ -22,6 +22,7 @@ a.button, input[type=submit] {
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
+  margin: .1rem;
 }
 
 form a.button, input[type=submit] {
@@ -176,6 +177,15 @@ input[type=text].search {
 input[type=submit].search {
   margin-top: .3rem;
   margin-left: 0;
+}
+
+p.page-buttons {
+  width: 100%;
+  text-align: center;
+}
+
+p.page-buttons a.button {
+  border-radius: 50%;
 }
 
 .error {

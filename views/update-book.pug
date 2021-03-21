@@ -1,11 +1,12 @@
 extends layout 
 
 block content 
-  h1= title 
+  h1
+    a(href="/books")= title  
 
   include format-errors
 
-  form(action=`/books/${book.id}` method="post")
+  form(action=`/books/book-${book.id}` method="post")
     p 
       label(for="title") Title  
       input(type="text" name="title" id="title" value=book.title) 
@@ -20,7 +21,7 @@ block content
       input(type="text" name="year" id="year" value=book.year) 
     p  
       input(type="submit", value="Update Book")
-  form(action=`/books/${book.id}/delete` method="post" onSubmit={})
+  form(action=`/books/book-${book.id}/delete` method="post" onSubmit={})
     p 
       a.button(href="/books") Cancel 
     p 

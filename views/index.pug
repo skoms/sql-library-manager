@@ -1,23 +1,35 @@
 extends layout 
 
 block content 
-  h1 Books 
+  h1
+    a(href="/books")= title 
   p 
+    a.button(href="/books") Home 
     a.button(href="/books/new") Create New Book 
   p 
     include search-field
-  table 
-    thead 
-      tr 
-        th Title 
-        th Author 
-        th Genre 
-        th Year
-    tbody 
-      each book of books
+  if(books.length === 0)
+        h2 Sorry, we found no books matching your search ☹
+  else
+    table 
+      thead 
         tr 
-          td 
-            a(href=`/books/${book.id}`)= book.title 
-          td= book.author 
-          td= book.genre
-          td= book.year
+          th Title 
+          th Author 
+          th Genre 
+          th Year
+      tbody 
+        each book of books
+          tr 
+            td 
+              a(href=`/books/book-${book.id}`)= book.title 
+            td= book.author 
+            td= book.genre
+            td= book.year
+  if(source === "home")
+    p.page-buttons 
+      - for (var i = 1; i <= pages; ++i) {
+          a.button(id=i href=`/books/page-${i}`)= i
+      - }
+
+      

@@ -1,12 +1,12 @@
 section.search-forms
-  form.search-adv
+  form.search-adv(action="/books/advanced-search" method="post") 
     label(for="title-search") Advanced Search 
-    input#title-search.search-adv(type="text", name="title-search" placeholder="title")
-    input#author-search.search-adv(type="text", name="author-search" placeholder="author")
-    input#genre-search.search-adv(type="text", name="genre-search" placeholder="genre")
-    input#year-search.search-adv(type="text", name="year-search" placeholder="year")
+    input#title-search.search-adv(type="text" onclick="this.select();" name="title-search" placeholder="title" value=titleQuery)
+    input#author-search.search-adv(type="text" onclick="this.select();" name="author-search" placeholder="author" value=authorQuery)
+    input#genre-search.search-adv(type="text" onclick="this.select();" name="genre-search" placeholder="genre" value=genreQuery)
+    input#year-search.search-adv(type="text" onclick="this.select();" name="year-search" placeholder="year" value=yearQuery)
     input.search(type="submit", value="Search")
-  form.search
+  form.search(action="/books/simple-search" method="post") 
     label(for="search") Simple Search 
-    input#search.search(type="text", name="search" placeholder="Search...")
-    input.search(type="submit", value="Search")
+    input#search.search(type="text" onclick="this.select();" name="search" placeholder="Search..." value=search)
+    input.search(type="submit"  value="Search")

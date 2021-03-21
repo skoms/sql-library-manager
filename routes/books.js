@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const { Book } = require('../models');
+const { Op } = require('sequelize');
+
 
 /* Async handler Middleware. */
 function asyncHandler(callback){
@@ -15,16 +17,81 @@ function asyncHandler(callback){
 
 /* GET books page. */
 router.get('/', asyncHandler( async (req, res, next) => {
-  const books = await Book.findAll();
-  res.render('index', { title: "Books", books, checked: false });
+  res.redirect('/books/page-1');
 }));
 
-// POST search results page
-router.post('/', asyncHandler( async (req, res, next) => {
+/* GET books by page num. */
+router.get('/page-:page', asyncHandler( async (req, res, next) => {
+  const page = req.params.page;
+  const books = await Book.findAll({ limit: 15, offset: 15 * (page - 1), order: [['title', 'ASC']] });
+
+  const totalBooks =  await Book.findAll({ order: [['title', 'ASC']] }); // used to set up pagination buttons
+  const pages = Math.round(totalBooks.length / 15);
+
+  res.render('index', { title: "Books", books, pages, source: 'home' });
+}));
+
+// POST simple search results page
+router.post('/simple-search', asyncHandler( async (req, res, next) => {
+  /* Sets the query to null if it's empty, as '' will result to all when using Op.substring. This prevents false results (Press the 'Home' button to return to home)*/
+  let query = req.body.search === '' ? null : req.body.search;
   let books;
   try {
-    books = await Book.findAll({ where: {}});
-    res.render('index', { title: "Books", books, checked: false });
+    books = await Book.findAll({
+      where: {
+        [Op.or]: [
+          { title: {
+            [Op.substring]: query,
+          }},
+          { author: {
+            [Op.substring]: query,
+          }},
+          { genre: {
+            [Op.substring]: query,
+          }},
+          { year: {
+            [Op.eq]: query,
+          }},
+        ]
+      },
+      order: [['title', 'ASC']]
+    });
+    res.render('index', { title: query !== '' ? `Search Results for: '${query}'` : 'Books', books, search: query });
+  } catch (error) {
+    throw error;
+  }
+}));
+
+// POST advanced search results page
+router.post('/advanced-search', asyncHandler( async (req, res, next) => {
+  /* Sets the different values to null if they are empty, as '' will result to all when using Op.substring. This prevents false results */
+  const titleQuery = req.body['title-search'] === '' ? null : req.body['title-search'];
+  const authorQuery = req.body['author-search'] === '' ? null : req.body['author-search'];
+  const genreQuery =req.body['genre-search'] === '' ? null : req.body['genre-search'];
+  const yearQuery = req.body['year-search'] === '' ? null : req.body['year-search'];
+
+  let books;
+  try {
+    books = await Book.findAll({
+      where: {
+        [Op.or]: [
+          { title: {
+            [Op.substring]: titleQuery,
+          }},
+          { author: {
+            [Op.substring]: authorQuery,
+          }},
+          { genre: {
+            [Op.substring]: genreQuery,
+          }},
+          { year: {
+            [Op.eq]: yearQuery,
+          }},
+        ]
+      },
+      order: [['title', 'ASC']]
+    });
+    res.render('index', { title: 'Advanced Search Results', books, titleQuery, authorQuery, genreQuery, yearQuery});
   } catch (error) {
     throw error;
   }
@@ -32,7 +99,7 @@ router.post('/', asyncHandler( async (req, res, next) => {
  
 /* GET create new book form page. */
 router.get('/new', asyncHandler( (req, res, next) => {
-  res.render('new-book', { title: "New Book" });
+  res.render('new-book', { title: "New Book", book: {} });
 }));
 
 /* POST create new book. */
@@ -42,12 +109,17 @@ router.post('/', asyncHandler( async (req, res, next) => {
     book = await Book.create(req.body);
     res.redirect('/books'); 
   } catch (error) {
-    throw error;
+    if(error.name === "SequelizeValidationError") {
+      book = await Book.build(req.body);
+      res.render('new-book', { title: "New Book", book, errors: error.errors });
+    } else {
+      throw error; // error get thrown up to the asyncHandler's catch block
+    }
   }
 }));
 
 /* GET book update form page. */
-router.get('/:id', asyncHandler( async (req, res, next) => {
+router.get('/book-:id', asyncHandler( async (req, res, next) => {
   let book = await Book.findByPk(req.params.id);
   if(book) {
     res.render('update-book', { title: "Update Book", book });
@@ -56,8 +128,14 @@ router.get('/:id', asyncHandler( async (req, res, next) => {
   }
 }));
 
+
+router.get('/error', asyncHandler( async (req, res, next) => {
+  const error = new Error();
+  throw error;
+}));
+
 /* POST Update book. */
-router.post('/:id', asyncHandler( async (req, res, next) => {
+router.post('/book-:id', asyncHandler( async (req, res, next) => {
   let book;
   try {
     book = await Book.findByPk(req.params.id);
@@ -81,7 +159,7 @@ router.post('/:id', asyncHandler( async (req, res, next) => {
 }));
 
 /* POST Delete book. */
-router.post('/:id/delete', asyncHandler( async (req, res, next) => {
+router.post('/book-:id/delete', asyncHandler( async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   console.log(book);
   try {
