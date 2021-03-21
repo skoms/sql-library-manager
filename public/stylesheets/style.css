@@ -87,9 +87,70 @@ input {
   transition: 0.4s;
 }
 
-p.advanced-search {
-  margin-left: 0.45rem;
-  margin-bottom: -1rem;
+section.search-forms {
+  display: flex;
+  flex-direction: row;
+}
+
+form {
+  margin: 1rem;
+}
+
+form.search-adv {
+  display: grid;
+  grid-template: 3rem 3rem 3rem 3rem / 10rem 10rem;
+  grid-template-areas: 
+    "header header"
+    "title author"
+    "genre year"
+    "search search";
+  justify-items: center;
+}
+
+form.search-adv label {
+  grid-area: header;
+}
+
+#author-search {
+  grid-area: author;
+}
+
+#genre-search {
+  grid-area: genre;
+}
+
+#year-search {
+  grid-area: year;
+}
+
+form.search-adv input[type=submit] {
+  grid-area: search;
+  width: 107%;
+}
+
+form.search {
+  display: grid;
+  grid-template: 3rem 3rem 3rem 3rem / 10rem 10rem;
+  grid-template-areas: 
+    "header header"
+    "search-field search-field"
+    "search-field search-field"
+    "search search";
+  justify-items: center;
+}
+
+form.search label {
+  grid-area: header;
+}
+
+#search {
+  grid-area: search-field;
+  width: 100%;
+}
+
+form.search input[type=submit] {
+  grid-area: search;
+  width: 107%;
 }
 
 section.search-forms label {
@@ -99,27 +160,22 @@ section.search-forms label {
 
 input[type=text] {
   margin-left: 7px;
-  width: 300px;
+  width: 30%;
 }
 
 input[type=text].search-adv {
-  width: 10rem;
+  width: 100%;
   margin-left: 0;
 }
 
 input[type=text].search {
-  width: 21.5rem;
+  width: 100%;
   margin-left: 0;
 }
 
 input[type=submit].search {
-  width: 23rem;
   margin-top: .3rem;
   margin-left: 0;
-}
-
-form.search-adv {
-  max-width: 24rem;
 }
 
 .error {
