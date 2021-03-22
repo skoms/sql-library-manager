@@ -1,15 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* Using webkit to style the 'autocomplete' styling on hover/focus */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+  outline: none;
+  -webkit-text-fill-color: #25bae4;
+  transition: background-color 5000s ease-in-out 0s;
+} /* Credits to Geoff Graham at: https://css-tricks.com/snippets/css/change-autocomplete-styles-webkit-browsers/ */
+
+input[type=text]:focus {
+  border: 2px solid #25bae4;
+}
+
+html {
+  display: flex;
+  justify-content: center;
+}
+
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font-size: 22px;
+  font-family: 'VT323', monospace;
   background-color: #282C34;
   color: #61DAFB;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 900px;
+}
+
+h1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 5rem;
 }
 
 a {
   color: #25bae4;
   text-decoration: none;
   font-weight: bold;
-  transition: 0.4s;
+  transition: 0s;
 }
 
   a:hover {
@@ -19,21 +50,21 @@ a {
 a.button, input[type=submit] {
   color: #282C34;
   background: #61DAFB;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'VT323', monospace;
   padding: 10px 14px 12px;
-  font-size: 14px;
+  font-size: 18px;
   border-radius: 2px;
   cursor: pointer;
   margin: .1rem;
 }
 
-form a.button, input[type=submit] {
-  margin-left: 140px;
-  transition: 0.4s;
+table {
+  margin-bottom: 20px;
 }
 
-input[type=submit] {
-  border: 0;
+form a.button, input[type=submit] {
+  margin-left: 140px;
+  transition: 0s;
 }
 
   a.button:hover, input[type=submit]:hover {
@@ -52,8 +83,8 @@ ul {
 }
 
 h2 {
-  border-top: 2px solid #e7e7e7;
-  padding-top: 20px;
+  border-bottom: 2px solid #EC0F0F;
+  padding-bottom: 20px;
 }
 
 th {
@@ -67,7 +98,7 @@ tr {
 }
 
 tr:nth-child(2n) {
-  background: #35373a;
+  background: #2b384b;
 }
 
 td {
@@ -78,21 +109,25 @@ label {
   font-weight: bold;
   min-width: 130px;
   display: inline-block;
-  transition: 0.4s;
+  transition: 0s;
 }
 
 input {
   padding: 10px;
-  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
   border-radius: 2px;
   border-color: #3c3e42;
-  transition: 0.4s;
+  transition: 0s;
+  outline: none;
 }
 
 section.search-forms {
+  margin-top: -35px;
+  margin-bottom: -35px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 form {
@@ -190,6 +225,12 @@ p.page-buttons {
 
 p.page-buttons a.button {
   border-radius: 50%;
+}
+
+#selected {
+  background-color: #025066;
+  color: #84d8f0;
+  border: #25bae4 2px solid;
 }
 
 .error {

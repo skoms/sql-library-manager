@@ -6,7 +6,7 @@ block content
   p 
     a.button(href="/books") Home 
     a.button(href="/books/new") Create New Book 
-  p 
+  p.search-container 
     include search-field
   if(books.length === 0)
         h2 Sorry, we found no books matching your search ☹
@@ -69,10 +69,18 @@ block content
     if(source === "home")
       p.page-buttons 
         - for (var i = 1; i <= pages; ++i) {
-            a.button(id=i href=`/books/page-${i}`)= i
+            - if( page != i ) {
+                a.button(href=`/books/page-${i}`)= i
+            - } else {
+                a.button(id="selected" href=`/books/page-${i}`)= i
+            - }
         - }
     if(source === "ordered")
       p.page-buttons 
         - for (var i = 1; i <= pages; ++i) {
-            a.button(id=i href=`/books/page-${i}/${column}-${order}`)= i
+            - if( page != i ) {
+                a.button(href=`/books/page-${i}`)= i
+            - } else {
+                a.button(id="selected" href=`/books/page-${i}`)= i
+            - }
         - }

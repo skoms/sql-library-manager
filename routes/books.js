@@ -23,19 +23,19 @@ router.get('/', asyncHandler( async (req, res, next) => {
 /* GET books by page num. */
 router.get('/page-:page', asyncHandler( async (req, res, next) => {
   const page = req.params.page;
-  const perPage = 10;
+  const perPage = 12;
   const books = await Book.findAll({ limit: perPage, offset: perPage * (page - 1), order: [['title', 'ASC']] });
 
   const totalBooks =  await Book.findAll(); // used to set up pagination buttons
   const pages = Math.round(totalBooks.length / perPage);
 
-  res.render('index', { title: "Books", books, pages, source: 'home', column: '', order: '' });
+  res.render('index', { title: "Books", books, pages, source: 'home', column: '', order: '', page });
 }));
 
 /* GET books by page num and order. */
 router.get('/page-:page/:column-:order', asyncHandler( async (req, res, next) => {
   const page = req.params.page;
-  const perPage = 10;
+  const perPage = 12;
   const column = req.params.column;
   const order = req.params.order; 
 
@@ -44,7 +44,7 @@ router.get('/page-:page/:column-:order', asyncHandler( async (req, res, next) =>
   const totalBooks =  await Book.findAll(); // used to set up pagination buttons
   const pages = Math.round(totalBooks.length / perPage);
 
-  res.render('index', { title: "Books", books, pages, source: 'ordered', column, order });
+  res.render('index', { title: "Books", books, pages, source: 'ordered', column, order, page });
 }));
 
 // POST simple search results page
@@ -111,7 +111,7 @@ router.get('/new', asyncHandler( (req, res, next) => {
 }));
 
 /* POST create new book. */
-router.post('/', asyncHandler( async (req, res, next) => {
+router.post('/new', asyncHandler( async (req, res, next) => {
   let book;
   try {
     book = await Book.create(req.body);
@@ -134,12 +134,6 @@ router.get('/book-:id', asyncHandler( async (req, res, next) => {
   } else {
     next(); // will pass on the route to the 404 catcher
   }
-}));
-
-
-router.get('/error', asyncHandler( async (req, res, next) => {
-  const error = new Error();
-  throw error;
 }));
 
 /* POST Update book. */
