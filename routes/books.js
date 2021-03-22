@@ -23,12 +23,28 @@ router.get('/', asyncHandler( async (req, res, next) => {
 /* GET books by page num. */
 router.get('/page-:page', asyncHandler( async (req, res, next) => {
   const page = req.params.page;
-  const books = await Book.findAll({ limit: 15, offset: 15 * (page - 1), order: [['title', 'ASC']] });
+  const perPage = 10;
+  const books = await Book.findAll({ limit: perPage, offset: perPage * (page - 1), order: [['title', 'ASC']] });
 
-  const totalBooks =  await Book.findAll({ order: [['title', 'ASC']] }); // used to set up pagination buttons
-  const pages = Math.round(totalBooks.length / 15);
+  const totalBooks =  await Book.findAll(); // used to set up pagination buttons
+  const pages = Math.round(totalBooks.length / perPage);
 
-  res.render('index', { title: "Books", books, pages, source: 'home' });
+  res.render('index', { title: "Books", books, pages, source: 'home', column: '', order: '' });
+}));
+
+/* GET books by page num and order. */
+router.get('/page-:page/:column-:order', asyncHandler( async (req, res, next) => {
+  const page = req.params.page;
+  const perPage = 10;
+  const column = req.params.column;
+  const order = req.params.order; 
+
+  const books = await Book.findAll({ limit: perPage, offset: perPage * (page - 1), order: [[column, order]] });
+
+  const totalBooks =  await Book.findAll(); // used to set up pagination buttons
+  const pages = Math.round(totalBooks.length / perPage);
+
+  res.render('index', { title: "Books", books, pages, source: 'ordered', column, order });
 }));
 
 // POST simple search results page
@@ -40,18 +56,10 @@ router.post('/simple-search', asyncHandler( async (req, res, next) => {
     books = await Book.findAll({
       where: {
         [Op.or]: [
-          { title: {
-            [Op.substring]: query,
-          }},
-          { author: {
-            [Op.substring]: query,
-          }},
-          { genre: {
-            [Op.substring]: query,
-          }},
-          { year: {
-            [Op.eq]: query,
-          }},
+          { title: {  [Op.substring]: query }},
+          { author: { [Op.substring]: query }},
+          { genre: { [Op.substring]: query }},
+          { year: { [Op.eq]: query }}
         ]
       },
       order: [['title', 'ASC']]

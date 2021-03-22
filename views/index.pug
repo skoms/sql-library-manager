@@ -14,10 +14,50 @@ block content
     table 
       thead 
         tr 
-          th Title 
-          th Author 
-          th Genre 
-          th Year
+          th 
+            if(source === 'home' || source === 'ordered')
+              if(column === 'title' || column === '')
+                if(order === 'asc' || order === '')
+                  a(href=`/books/page-1/title-desc`) Title 
+                else 
+                  a(href=`/books/page-1/title-asc`) Title 
+              else 
+                a(href=`/books/page-1/title-asc`) Title 
+            else 
+              p Title
+          th 
+            if(source === 'home' || source === 'ordered')
+              if(column === 'author' || column === '')
+                if(order === 'desc' || order === '')
+                  a(href=`/books/page-1/author-asc`) Author 
+                else 
+                  a(href=`/books/page-1/author-desc`) Author 
+              else 
+                a(href=`/books/page-1/author-asc`) Author 
+            else 
+              p Author
+          th 
+            if(source === 'home' || source === 'ordered')
+              if(column === 'genre' || column === '')
+                if(order === 'desc' || order === '')
+                  a(href=`/books/page-1/genre-asc`) Genre 
+                else 
+                  a(href=`/books/page-1/genre-desc`) Genre 
+              else 
+                a(href=`/books/page-1/genre-asc`) Genre 
+            else 
+              p Genre    
+          th 
+            if(source === 'home' || source === 'ordered')
+              if(column === 'year' || column === '')
+                if(order === 'desc' || order === '')
+                  a(href=`/books/page-1/year-asc`) Year 
+                else 
+                  a(href=`/books/page-1/year-desc`) Year 
+              else 
+                a(href=`/books/page-1/year-asc`) Year 
+            else 
+              p Year    
       tbody 
         each book of books
           tr 
@@ -26,10 +66,13 @@ block content
             td= book.author 
             td= book.genre
             td= book.year
-  if(source === "home")
-    p.page-buttons 
-      - for (var i = 1; i <= pages; ++i) {
-          a.button(id=i href=`/books/page-${i}`)= i
-      - }
-
-      
+    if(source === "home")
+      p.page-buttons 
+        - for (var i = 1; i <= pages; ++i) {
+            a.button(id=i href=`/books/page-${i}`)= i
+        - }
+    if(source === "ordered")
+      p.page-buttons 
+        - for (var i = 1; i <= pages; ++i) {
+            a.button(id=i href=`/books/page-${i}/${column}-${order}`)= i
+        - }
