@@ -82,7 +82,7 @@ ul {
   line-height: 1.3em;
 }
 
-h2 {
+h2.error {
   border-bottom: 2px solid #EC0F0F;
   padding-bottom: 20px;
 }
@@ -216,6 +216,8 @@ input[type=text].search {
 input[type=submit].search {
   margin-top: .3rem;
   margin-left: 0;
+  border: #25bae4 1px solid;
+  border-radius: 2px;
 }
 
 p.page-buttons {
@@ -224,7 +226,7 @@ p.page-buttons {
 }
 
 p.page-buttons a.button {
-  border-radius: 50%;
+  border-radius: 2px
 }
 
 #selected {
@@ -235,4 +237,11 @@ p.page-buttons a.button {
 
 .error {
   color: rgb(236, 15, 15);
+}
+
+.not-found {
+  height: 300px;
+  width: 300px;
+  padding: 3px;
+  background-color: #25bae4;
 }

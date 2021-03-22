@@ -2,8 +2,10 @@
 const Sequelize = require('sequelize');
 const { Model } = Sequelize;
 const date = new Date();
-const currentYear = date.getFullYear();
+const currentYear = date.getFullYear(); // Getting year to validate the 'year'
 
+
+// Export the 'Book' model
 module.exports = (sequelize) => {
   class Book extends Model { };
   Book.init({

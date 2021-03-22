@@ -15,6 +15,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+// Import models by filename, dynamic
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -31,7 +32,9 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+// Attach sequelize instance to 'db'
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Export 'db' 
 module.exports = db;

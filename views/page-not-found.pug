@@ -3,7 +3,8 @@ extends layout
 block content
   h1
     a(href="/books")= title 
-  h2= error.status
+  p
+    img.not-found(src="/static/images/404icon.png", alt="404 Icon")
   p= error.message 
   br
   p
